@@ -33,7 +33,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 TEMPLATE    = lib
 TARGET	    = $$qtLibraryTarget(FlatGui)
 DESTDIR	    = ../deploy/lib
-#DLLDESTDIR  = "../../../WaageScan Advanced/app/deploy"
 
 TRANSLATIONS = \
     translations/FlatGui_de.ts \
@@ -66,7 +65,6 @@ SOURCES += \
     FancyField.cpp \
     GenericForm.cpp \
     GridWidget.cpp \
-    HorizontalSlide.cpp \
     LineEdit.cpp \
     ListItemAnimation.cpp \
     MonthPage.cpp \
@@ -78,7 +76,6 @@ SOURCES += \
     PixmapBuilder.cpp \
     PushButton.cpp \
     SearchForm.cpp \
-    SlideView.cpp \
     SidePanel.cpp \
     SimpleMessage.cpp \
     Splash.cpp \
@@ -93,7 +90,9 @@ SOURCES += \
     TimeField.cpp \
     ToolBar.cpp \
     ToolButton.cpp \
-    ValidatorFactory.cpp
+    ValidatorFactory.cpp \
+    cdk/HorizontalSlide.cpp \
+    components/SlideView.cpp
 
 HEADERS += \
     AbstractButton.h \
@@ -125,7 +124,7 @@ HEADERS += \
     GenericForm_p.h \
     GridWidget.h \
     GridWidget_p.h \
-    HorizontalSlide.h \
+    cdk/HorizontalSlide.h \
     LineEdit.h \
     ListItemAnimation.h \
     MonthPage.h \
@@ -139,12 +138,10 @@ HEADERS += \
     PixmapBuilder_p.h \
     PushButton.h \
     PushButton_p.h \
-    SlideView.h \
     SearchForm.h \
     SearchForm_p.h \
     SidePanel.h \
     SimpleMessage.h \
-    SlideView_p.h \
     Splash.h \
     SplitView.h \
     SplitView_p.h \
@@ -162,9 +159,13 @@ HEADERS += \
     ToolBar.h \
     ToolButton.h \
     ToolButton_p.h \
-    ValidatorFactory.h
+    ValidatorFactory.h \
+    cdk/HorizontalSlide_p.h \
+    components/SlideView.h \
+    components/SlideView_p.h
 
 OTHER_FILES += \
+    FlatGui.qdocconf \
     FlatGui.qdoc
 
 RESOURCES += \

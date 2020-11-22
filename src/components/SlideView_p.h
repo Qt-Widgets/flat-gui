@@ -22,40 +22,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SLIDEVIEW_H
-#define SLIDEVIEW_H
+#ifndef SLIDEVIEW_P_H
+#define SLIDEVIEW_P_H
 
-#include "flatgui_global.h"
 #include <QWidget>
+#include <QWidgetList>
 
-class SlideViewPrivate;
+class SlideView;
 
-class FLATGUISHARED_EXPORT SlideView : public QWidget
+class SlideViewPrivate
 {
-	Q_OBJECT
-public:
-	explicit SlideView(QWidget *parent = nullptr);
-	~SlideView();
+	Q_DISABLE_COPY(SlideViewPrivate)
 
-	void addHomePage(QWidget *page);
-	void addPage(QWidget *page, bool dontStack = true);
+	explicit SlideViewPrivate(SlideView *parent);
 
-public slots:
-	void gotoPreviousPage();
-	void gotoFirstPage();
-	void gotoNextPage();
-	void gotoPage(int n);
+	void removeRemainingPages();
+	void slideToPage(int index, int duration);
 
-protected:
-	void resizeEvent(QResizeEvent *) override;
+	SlideView *p_ptr;
 
-private:
-	SlideViewPrivate *m_ptr;
+	QWidgetList pages;
+	int currentIndex;
+	int nextIndex;
+	bool busy;
 
-signals:
-	void countChanged(int);
-	void currentIndexChanged(int, int);
-	void currentPageChanged(const QString &);
+	friend class SlideView;
 };
 
-#endif // SLIDEVIEW_H
+#endif // SLIDEVIEW_P_H
