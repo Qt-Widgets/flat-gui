@@ -23,19 +23,16 @@ SOFTWARE.
 */
 
 #include "MainWindow.h"
-
 #include <QApplication>
+#include <QFontDatabase>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	MainWindow w;
 
-	QFont font(QApplication::font());
-
-	font.setPointSize(11);
-
-	QApplication::setFont(font);
+	QFontDatabase::addApplicationFont(":/bin/fonts/roboto/Roboto-Regular.ttf");
+	QApplication::setFont(QFont("Roboto", 11));
 
 	w.show();
 

@@ -22,20 +22,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef SHORIZONTALSLIDE_P_H
+#define SHORIZONTALSLIDE_P_H
 
-#include <QMainWindow>
+#include <QtCore/qglobal.h>
+#include <QPixmap>
 
-class MainWindow : public QMainWindow
+class SHorizontalSlide;
+class QWidget;
+class QLabel;
+
+class SHorizontalSlidePrivate
 {
-	Q_OBJECT
-public:
-	explicit MainWindow(QWidget *parent = nullptr);
+	Q_DISABLE_COPY(SHorizontalSlidePrivate);
 
-private slots:
-	void onAlert();
-	void onDrumset();
+	explicit SHorizontalSlidePrivate(SHorizontalSlide *parent);
+	~SHorizontalSlidePrivate();
+
+	void startSlide();
+	QPixmap makeSnapshot(QWidget *page);
+	void setInProgress(bool value);
+
+	SHorizontalSlide *p_ptr;
+
+	QWidget *currentPage;
+	QWidget *nextPage;
+	QLabel *labCurrent;
+	QLabel *labNext;
+	int direction;
+	int duration;
+	bool inProgress;
+
+	friend class SHorizontalSlide;
 };
 
-#endif // MAINWINDOW_H
+#endif // SHORIZONTALSLIDE_P_H

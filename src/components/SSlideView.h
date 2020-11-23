@@ -22,38 +22,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef HORIZONTALSLIDE_P_H
-#define HORIZONTALSLIDE_P_H
+#ifndef SSLIDEVIEW_H
+#define SSLIDEVIEW_H
 
-#include <QtCore/qglobal.h>
-#include <QPixmap>
+#include "flatgui_global.h"
+#include <QWidget>
 
-class HorizontalSlide;
-class QWidget;
-class QLabel;
+class SSlideViewPrivate;
 
-class HorizontalSlidePrivate
+class FLATGUISHARED_EXPORT SSlideView : public QWidget
 {
-	Q_DISABLE_COPY(HorizontalSlidePrivate);
+	Q_OBJECT
+	Q_PROPERTY(int pageCount READ pageCount NOTIFY pageCountChanged)
+	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex
+			   NOTIFY currentIndexChanged)
+public:
+	explicit SSlideView(QWidget *parent = nullptr);
+	~SSlideView();
 
-	explicit HorizontalSlidePrivate(HorizontalSlide *parent);
-	~HorizontalSlidePrivate();
+	void appendPage(QWidget *page);
+	int pageCount() const;
+	QWidget *currentPage() const;
 
-	void startSlide();
-	QPixmap makeSnapshot(QWidget *page);
-	void setInProgress(bool value);
+	int currentIndex() const;
+	void setCurrentIndex(int index);
 
-	HorizontalSlide *p_ptr;
+public slots:
+	void gotoPreviousPage();
+	void gotoFirstPage();
+	void gotoNextPage();
+	void gotoPage(int index, int duration);
 
-	QWidget *currentPage;
-	QWidget *nextPage;
-	QLabel *labCurrent;
-	QLabel *labNext;
-	int direction;
-	int duration;
-	bool inProgress;
+protected:
+	void resizeEvent(QResizeEvent *) override;
 
-	friend class HorizontalSlide;
+private:
+	SSlideViewPrivate *m_ptr;
+
+signals:
+	void pageCountChanged();
+	void currentIndexChanged();
 };
 
-#endif // HORIZONTALSLIDE_P_H
+#endif // SSLIDEVIEW_H

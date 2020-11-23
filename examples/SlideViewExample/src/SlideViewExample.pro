@@ -31,6 +31,9 @@ SOURCES += \
 HEADERS += \
     MainWindow.h
 
+DISTFILES += \
+    SlideViewExample.qdoc
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -42,3 +45,6 @@ else:unix: LIBS += -L$$PWD/../../../deploy/lib/ -lFlatGui
 
 INCLUDEPATH += $$PWD/../../../deploy/include
 DEPENDPATH += $$PWD/../../../deploy/include
+
+RESOURCES += \
+	resources.qrc

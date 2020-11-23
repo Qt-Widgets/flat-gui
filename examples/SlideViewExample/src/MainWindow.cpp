@@ -23,32 +23,34 @@ SOFTWARE.
 */
 
 #include "MainWindow.h"
-#include "SlideView.h"
-#include <QBoxLayout>
+#include "SSlideView.h"
 #include <QToolBar>
-#include <QPushButton>
-#include <QLabel>
 #include <QAction>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent)
 {
 	auto *toolBar = new QToolBar(this);
 	auto *labTitle(new QLabel(this));
-	auto *slideView(new SlideView(this));
-	auto *actBack = new QAction(tr("<"), this);
-	auto *actNext = new QAction(tr(">"), this);
+	auto *slideView(new SSlideView(this));
+	auto *actBack = new QAction(QIcon(":/pix/images/icons/arrow-left.png"),
+								tr("Previous"), this);
+	auto *actNext = new QAction(QIcon(":/pix/images/icons/arrow-right.png"),
+								tr("Next"), this);
 
-	connect(actNext, &QAction::triggered, slideView, &SlideView::gotoNextPage);
-	connect(actBack, &QAction::triggered, slideView, &SlideView::gotoPreviousPage);
+	connect(actBack, &QAction::triggered,
+			slideView, &SSlideView::gotoPreviousPage);
+	connect(actNext, &QAction::triggered,
+			slideView, &SSlideView::gotoNextPage);
 
-	connect(slideView, &SlideView::currentIndexChanged,
+	connect(slideView, &SSlideView::currentIndexChanged,
 			[this, slideView, labTitle, actBack, actNext](){
 		enableButtons(slideView, actBack, actNext);
 		labTitle->setText(slideView->currentPage()->windowTitle());
 	});
 
-	connect(slideView, &SlideView::pageCountChanged,
+	connect(slideView, &SSlideView::pageCountChanged,
 			[this, slideView, actBack, actNext](){
 		enableButtons(slideView, actBack, actNext);
 	});
@@ -69,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	resize(320, 480);
 }
 
-QWidget *MainWindow::createLabel(const QString &title)
+QLabel *MainWindow::createLabel(const QString &title)
 {
 	auto *label = new QLabel(title + "\n\n"
 							 + "Lorem ipsum dolor sit amet, consetetur sadipscing"
@@ -89,9 +91,7 @@ QWidget *MainWindow::createLabel(const QString &title)
 	label->setWordWrap(true);
 	label->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 	label->setWindowTitle(title);
-//	label->setAutoFillBackground(true);
 	label->setMargin(20);
-//	label->hide();
 
 	return label;
 }
@@ -105,11 +105,11 @@ QWidget *MainWindow::createStretch()
 	return stretch;
 }
 
-void MainWindow::enableButtons(SlideView *slideView, QAction *actPrevious,
+void MainWindow::enableButtons(SSlideView *slideView, QAction *actBack,
 							   QAction *actNext)
 {
 	int currentIndex = slideView->currentIndex();
 
-	actPrevious->setEnabled(currentIndex > 0);
+	actBack->setEnabled(currentIndex > 0);
 	actNext->setEnabled(currentIndex < slideView->pageCount() - 1);
 }

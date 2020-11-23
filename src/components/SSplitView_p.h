@@ -22,14 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "MainWindow.h"
-#include <QApplication>
+#ifndef SSPLITVIEW_P_H
+#define SSPLITVIEW_P_H
 
-int main(int argc, char *argv[])
+#include <QtCore/qglobal.h>
+
+class SSplitView;
+class QWidget;
+
+class SSplitViewPrivate
 {
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
+	Q_DISABLE_COPY(SSplitViewPrivate)
 
-	return a.exec();
-}
+	explicit SSplitViewPrivate(SSplitView *parent);
+
+	void startTransition();
+	void setSideWidgetState(int value);
+	void resizeWidgets();
+	void layoutWidgets(int x);
+
+	SSplitView *p_ptr;
+	QWidget *baseWidget;
+	QWidget *sideWidget;
+	int splitSide;
+	int splitDuration;
+	int sideWidgetState;
+	bool inProgress;
+
+	friend class SSplitView;
+};
+
+#endif // SSPLITVIEW_P_H

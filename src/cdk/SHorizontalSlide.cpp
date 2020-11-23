@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "HorizontalSlide.h"
-#include "HorizontalSlide_p.h"
+#include "SHorizontalSlide.h"
+#include "SHorizontalSlide_p.h"
 #include <QVariantAnimation>
 #include <QLabel>
 
 /*!
-	\class HorizontalSlide
+	\class SHorizontalSlide
 	\inmodule FlatGui
 	\brief Provides a horizontal sliding transition between two pages.
 
@@ -47,34 +47,34 @@ SOFTWARE.
  */
 
 /*!
-	Constructs a HorizontalSlide instance with a given \a parent.
+	Constructs a SHorizontalSlide instance with a given \a parent.
  */
 
-HorizontalSlide::HorizontalSlide(QWidget *parent) :
+SHorizontalSlide::SHorizontalSlide(QWidget *parent) :
 	QWidget(parent),
-	m_ptr(new HorizontalSlidePrivate(this))
+	m_ptr(new SHorizontalSlidePrivate(this))
 {
 
 }
 
-HorizontalSlide::~HorizontalSlide()
+SHorizontalSlide::~SHorizontalSlide()
 {
 	delete m_ptr;
 }
 
 /*!
-	\property HorizontalSlide::currentPage
+	\property SHorizontalSlide::currentPage
 	\brief The page from which the transition should start.
 
 	This property's default is \c nullptr.
  */
 
-QWidget *HorizontalSlide::currentPage() const
+QWidget *SHorizontalSlide::currentPage() const
 {
 	return m_ptr->currentPage;
 }
 
-void HorizontalSlide::setCurrentPage(QWidget *page)
+void SHorizontalSlide::setCurrentPage(QWidget *page)
 {
 	if (m_ptr->inProgress || m_ptr->currentPage == page)
 		return;
@@ -85,18 +85,18 @@ void HorizontalSlide::setCurrentPage(QWidget *page)
 }
 
 /*!
-	\property HorizontalSlide::nextPage
+	\property SHorizontalSlide::nextPage
 	\brief The page to which should be trainsitioned.
 
 	This property's default is \c nullptr.
  */
 
-QWidget *HorizontalSlide::nextPage() const
+QWidget *SHorizontalSlide::nextPage() const
 {
 	return m_ptr->nextPage;
 }
 
-void HorizontalSlide::setNextPage(QWidget *page)
+void SHorizontalSlide::setNextPage(QWidget *page)
 {
 	if (m_ptr->inProgress || m_ptr->nextPage == page)
 		return;
@@ -107,18 +107,18 @@ void HorizontalSlide::setNextPage(QWidget *page)
 }
 
 /*!
-	\property HorizontalSlide::direction
+	\property SHorizontalSlide::direction
 	\brief The direction of the transition.
 
 	This property's default is \c SD_SlideLeft.
  */
 
-HorizontalSlide::SlideDirection HorizontalSlide::direction() const
+SHorizontalSlide::SlideDirection SHorizontalSlide::direction() const
 {
 	return static_cast<SlideDirection>(m_ptr->direction);
 }
 
-void HorizontalSlide::setDirection(SlideDirection direction)
+void SHorizontalSlide::setDirection(SlideDirection direction)
 {
 	if (m_ptr->inProgress || m_ptr->direction == direction)
 		return;
@@ -129,18 +129,18 @@ void HorizontalSlide::setDirection(SlideDirection direction)
 }
 
 /*!
-	\property HorizontalSlide::duration
+	\property SHorizontalSlide::duration
 	\brief The duration of the transition.
 
 	This property's default is \c 250.
  */
 
-int HorizontalSlide::duration() const
+int SHorizontalSlide::duration() const
 {
 	return m_ptr->duration;
 }
 
-void HorizontalSlide::setDuration(int duration)
+void SHorizontalSlide::setDuration(int duration)
 {
 	if (m_ptr->inProgress || m_ptr->duration == duration)
 		return;
@@ -151,13 +151,13 @@ void HorizontalSlide::setDuration(int duration)
 }
 
 /*!
-	\property HorizontalSlide::inProgress
+	\property SHorizontalSlide::inProgress
 	\brief Wether the transition is currently in progress.
 
 	This property's default is \c false.
  */
 
-bool HorizontalSlide::inProgress() const
+bool SHorizontalSlide::inProgress() const
 {
 	return m_ptr->inProgress;
 }
@@ -166,7 +166,7 @@ bool HorizontalSlide::inProgress() const
 	Starts the transition.
  */
 
-void HorizontalSlide::start()
+void SHorizontalSlide::start()
 {
 	if (m_ptr->inProgress)
 		return;
@@ -175,13 +175,13 @@ void HorizontalSlide::start()
 	m_ptr->startSlide();
 }
 
-HorizontalSlidePrivate::HorizontalSlidePrivate(HorizontalSlide *parent) :
+SHorizontalSlidePrivate::SHorizontalSlidePrivate(SHorizontalSlide *parent) :
 	p_ptr(parent),
 	currentPage(nullptr),
 	nextPage(nullptr),
 	labCurrent(new QLabel(p_ptr)),
 	labNext(new QLabel(p_ptr)),
-	direction(HorizontalSlide::SD_SlideLeft),
+	direction(SHorizontalSlide::SD_SlideLeft),
 	duration(250),
 	inProgress(false)
 {
@@ -189,13 +189,13 @@ HorizontalSlidePrivate::HorizontalSlidePrivate(HorizontalSlide *parent) :
 	labNext->hide();
 }
 
-HorizontalSlidePrivate::~HorizontalSlidePrivate()
+SHorizontalSlidePrivate::~SHorizontalSlidePrivate()
 {
 	delete labCurrent;
 	delete labNext;
 }
 
-void HorizontalSlidePrivate::startSlide()
+void SHorizontalSlidePrivate::startSlide()
 {
 	if (!currentPage || !nextPage)
 		return;
@@ -203,7 +203,7 @@ void HorizontalSlidePrivate::startSlide()
 	setInProgress(true);
 
 	auto *animation = new QVariantAnimation(p_ptr);
-	bool slideLeft = direction == HorizontalSlide::SD_SlideLeft;
+	bool slideLeft = direction == SHorizontalSlide::SD_SlideLeft;
 
 	currentPage->hide();
 	nextPage->hide();
@@ -224,7 +224,7 @@ void HorizontalSlidePrivate::startSlide()
 					 [this](const QVariant &value){
 		int n = -value.toInt();
 		int m = currentPage->width() + n;
-		bool slideLeft = direction == HorizontalSlide::SD_SlideLeft;
+		bool slideLeft = direction == SHorizontalSlide::SD_SlideLeft;
 
 		labCurrent->move(slideLeft ? n : m, 0);
 		labNext->move(slideLeft ? m : n, 0);
@@ -242,7 +242,7 @@ void HorizontalSlidePrivate::startSlide()
 	animation->start(QVariantAnimation::DeleteWhenStopped);
 }
 
-QPixmap HorizontalSlidePrivate::makeSnapshot(QWidget *page)
+QPixmap SHorizontalSlidePrivate::makeSnapshot(QWidget *page)
 {
 	QPixmap pixmap(page->size());
 
@@ -251,7 +251,7 @@ QPixmap HorizontalSlidePrivate::makeSnapshot(QWidget *page)
 	return pixmap;
 }
 
-void HorizontalSlidePrivate::setInProgress(bool value)
+void SHorizontalSlidePrivate::setInProgress(bool value)
 {
 	if (inProgress == value)
 		return;

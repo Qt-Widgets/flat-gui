@@ -22,30 +22,53 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SPLITVIEW_H
-#define SPLITVIEW_H
+#ifndef SSPLITVIEW_H
+#define SSPLITVIEW_H
 
 #include "flatgui_global.h"
 #include <QWidget>
 
-class SplitViewPrivate;
+class SSplitViewPrivate;
 
-class FLATGUISHARED_EXPORT SplitView : public QWidget
+class FLATGUISHARED_EXPORT SSplitView : public QWidget
 {
 	Q_OBJECT
+	Q_PROPERTY(QWidget *baseWidget READ baseWidget WRITE setBaseWidget
+			   NOTIFY baseWidgetChanged)
+	Q_PROPERTY(QWidget *sideWidget READ sideWidget WRITE setSideWidget
+			   NOTIFY sideWidgetChanged)
+	Q_PROPERTY(SideType splitSide READ splitSide WRITE setSplitSide
+			   NOTIFY splitSideChanged)
+	Q_PROPERTY(int splitDuration READ splitDuration WRITE setSplitDuration
+			   NOTIFY splitDurationChanged)
+	Q_PROPERTY(StateType sideWidgetState READ sideWidgetState
+			   NOTIFY sideWidgetStateChanged)
 public:
 	enum SideType : int {
-		ST_Left,
+		ST_Left = 0,
 		ST_Right
 	};
 
-	explicit SplitView(QWidget *parent = nullptr);
-	~SplitView();
+	enum StateType : int {
+		ST_Closed = 0,
+		ST_Open
+	};
 
+	explicit SSplitView(QWidget *parent = nullptr);
+	~SSplitView();
+
+	QWidget *baseWidget() const;
 	void setBaseWidget(QWidget *widget);
-	void setSideWidget(QWidget *widget, bool hidden = true);
+	QWidget *sideWidget() const;
+	void setSideWidget(QWidget *widget);
 	SideType splitSide() const;
-	void setSplitSide(SideType sd);
+	void setSplitSide(SideType side);
+	int splitDuration() const;
+	void setSplitDuration(int duration);
+	StateType sideWidgetState() const;
+
+	void openSideWidget();
+	void closeSideWidget();
 
 public slots:
 	void toggleSideWidget();
@@ -54,14 +77,14 @@ protected:
 	void resizeEvent(QResizeEvent *) override;
 
 private:
-	SplitViewPrivate *m_ptr;
-
-private slots:
-	void onValueChanged(const QVariant &value);
-	void onAnimationFinished();
+	SSplitViewPrivate *m_ptr;
 
 signals:
-	void toggled(bool isOpen);
+	void baseWidgetChanged();
+	void sideWidgetChanged();
+	void splitSideChanged();
+	void splitDurationChanged();
+	void sideWidgetStateChanged();
 };
 
-#endif // SPLITVIEW_H
+#endif // SSPLITVIEW_H

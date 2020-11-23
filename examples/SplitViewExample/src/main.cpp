@@ -22,31 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SLIDEVIEW_P_H
-#define SLIDEVIEW_P_H
+#include "MainWindow.h"
+#include <QApplication>
+#include <QFontDatabase>
+#include <QDebug>
 
-#include <QWidget>
-#include <QWidgetList>
-
-class SlideView;
-
-class SlideViewPrivate
+int main(int argc, char *argv[])
 {
-	Q_DISABLE_COPY(SlideViewPrivate)
+	QApplication a(argc, argv);
+	MainWindow w;
 
-	explicit SlideViewPrivate(SlideView *parent);
+	QFontDatabase::addApplicationFont(":/bin/fonts/roboto/Roboto-Regular.ttf");
+	QApplication::setFont(QFont("Roboto", 11));
 
-	void removeRemainingPages();
-	void slideToPage(int index, int duration);
+	w.show();
 
-	SlideView *p_ptr;
-
-	QWidgetList pages;
-	int currentIndex;
-	int nextIndex;
-	bool busy;
-
-	friend class SlideView;
-};
-
-#endif // SLIDEVIEW_P_H
+	return a.exec();
+}

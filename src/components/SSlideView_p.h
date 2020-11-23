@@ -22,30 +22,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SPLITVIEW_P_H
-#define SPLITVIEW_P_H
+#ifndef SSLIDEVIEW_P_H
+#define SSLIDEVIEW_P_H
 
-#include <QtCore/qglobal.h>
+#include <QWidget>
+#include <QWidgetList>
 
-class SplitView;
-class QWidget;
+class SSlideView;
 
-class SplitViewPrivate
+class SSlideViewPrivate
 {
-	Q_DISABLE_COPY(SplitViewPrivate)
+	Q_DISABLE_COPY(SSlideViewPrivate)
 
-	explicit SplitViewPrivate(SplitView *parent);
+	explicit SSlideViewPrivate(SSlideView *parent);
 
-	void doLayout(int x);
+	void removeRemainingPages();
+	void slideToPage(int index, int duration);
 
-	SplitView *p_ptr;
-	QWidget *baseWidget;
-	QWidget *sideWidget;
-	int splitSide;
+	SSlideView *p_ptr;
+
+	QWidgetList pages;
+	int currentIndex;
+	int nextIndex;
 	bool busy;
-	bool slideIn;
 
-	friend class SplitView;
+	friend class SSlideView;
 };
 
-#endif // SPLITVIEW_P_H
+#endif // SSLIDEVIEW_P_H
